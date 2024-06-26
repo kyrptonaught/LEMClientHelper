@@ -11,5 +11,5 @@ public class HudConfig implements AbstractConfigFile {
 
     public float xOffset = 20;
 
-    public float transparency =.75f;
+    public float transparency = .75f;
 }

@@ -26,7 +26,7 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
     private float mouseX;
     @Shadow
     private float mouseY;
-    private static final Identifier TEXTURE = new Identifier(LEMClientHelperMod.MOD_ID, "textures/gui/legacy_inventory.png");
+    private static final Identifier TEXTURE = Identifier.of(LEMClientHelperMod.MOD_ID, "textures/gui/legacy_inventory.png");
 
     private static TexturedButtonWidget bookWidget;
 

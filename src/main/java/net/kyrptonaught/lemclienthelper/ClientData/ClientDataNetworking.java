@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 import java.util.concurrent.CompletableFuture;
 
 public class ClientDataNetworking {
-    public static final Identifier HAS_MODS_PACKET = new Identifier("scoreboardplayerinfo", "has_mods_packet");
+    public static final Identifier HAS_MODS_PACKET = Identifier.of("scoreboardplayerinfo", "has_mods_packet");
 
 
     @Environment(EnvType.CLIENT)

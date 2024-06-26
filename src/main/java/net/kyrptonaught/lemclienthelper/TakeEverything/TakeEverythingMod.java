@@ -1,6 +1,7 @@
 package net.kyrptonaught.lemclienthelper.TakeEverything;
 
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.kyrptonaught.kyrptconfig.config.NonConflicting.NonConflictingKeyBinding;
 import net.kyrptonaught.lemclienthelper.LEMClientHelperMod;
 import net.minecraft.client.option.KeyBinding;
@@ -21,6 +22,7 @@ public class TakeEverythingMod {
                 getConfig().keybinding,
                 setKey -> LEMClientHelperMod.configManager.save(MOD_ID)
         ));
+        PayloadTypeRegistry.playC2S().register(TakeEverythingPacket.PACKET_ID, TakeEverythingPacket.codec);
     }
 
     public static TakeEverythingConfig getConfig() {

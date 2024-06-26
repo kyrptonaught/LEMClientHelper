@@ -4,8 +4,10 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.kyrptonaught.lemclienthelper.LEMClientHelperMod;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Pair;
 import org.lwjgl.glfw.GLFW;
 
@@ -49,7 +51,7 @@ public class SmallInvMod {
 
         //give @p knowledge_book{display:{Name:'{"text":" "}'},SmallInv:1,CustomModelData:1}
         for (ItemStack itemStack : player.getInventory().main) {
-            if (itemStack.hasNbt() && itemStack.getNbt().contains("SmallInv") && itemStack.getNbt().getInt("SmallInv") == 1)
+            if (isSmallSlot(itemStack))
                 return true;
         }
         return false;
@@ -76,5 +78,11 @@ public class SmallInvMod {
             if (keycode.getCategory() != InputUtil.Type.KEYSYM) return false;
         }
         return keycode.getCode() == pressedKeyCode;
+    }
+
+    public static boolean isSmallSlot(ItemStack stack) {
+        return stack.isOf(Items.KNOWLEDGE_BOOK) &&
+                stack.contains(DataComponentTypes.CUSTOM_DATA) &&
+                stack.get(DataComponentTypes.CUSTOM_DATA).contains("SmallInv");
     }
 }

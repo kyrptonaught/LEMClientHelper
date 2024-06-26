@@ -22,6 +22,7 @@ import net.kyrptonaught.lemclienthelper.syncedKeybinds.SyncedKeybind;
 import net.kyrptonaught.lemclienthelper.syncedKeybinds.SyncedKeybindsConfig;
 import net.kyrptonaught.lemclienthelper.syncedKeybinds.SyncedKeybindsMod;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 public class ModMenuIntegration implements ModMenuApi {
 
@@ -118,9 +119,9 @@ public class ModMenuIntegration implements ModMenuApi {
             syncedKeybindItems.setToolTipWithNewLine("key.lemclienthelper.syncedkeys.tooltip");
             syncedKeybinds.addConfigItem(syncedKeybindItems);
 
-            for (String id : syncedKeybindsConfig.keybinds.keySet()) {
+            for (Identifier id : syncedKeybindsConfig.keybinds.keySet()) {
                 SyncedKeybindsConfig.KeybindConfigItem keybindConfigItem = syncedKeybindsConfig.keybinds.get(id);
-                KeybindItem keybindItem = (KeybindItem) new KeybindItem(Text.translatable("lch.key.sync." + id.replace(":", ".")), keybindConfigItem.keybinding, keybindConfigItem.defaultKeybinding).setSaveConsumer(val -> {
+                KeybindItem keybindItem = (KeybindItem) new KeybindItem(Text.translatable(id.toTranslationKey("lch.key.sync")), keybindConfigItem.keybinding, keybindConfigItem.defaultKeybinding).setSaveConsumer(val -> {
                     keybindConfigItem.keybinding = val;
                     SyncedKeybind syncedKeybind = SyncedKeybindsMod.syncedKeybindList.get(id);
                     if (syncedKeybind != null)

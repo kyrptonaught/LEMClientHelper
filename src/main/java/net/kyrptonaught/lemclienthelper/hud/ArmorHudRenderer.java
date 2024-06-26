@@ -13,13 +13,13 @@ import java.util.List;
 
 public class ArmorHudRenderer {
     private static final Identifier[] EMPTY_SLOTS = new Identifier[]{
-            new Identifier("minecraft", "textures/item/empty_armor_slot_boots.png"),
-            new Identifier("minecraft", "textures/item/empty_armor_slot_leggings.png"),
-            new Identifier("minecraft", "textures/item/empty_armor_slot_chestplate.png"),
-            new Identifier("minecraft", "textures/item/empty_armor_slot_helmet.png")
+            Identifier.of("minecraft", "textures/item/empty_armor_slot_boots.png"),
+            Identifier.of("minecraft", "textures/item/empty_armor_slot_leggings.png"),
+            Identifier.of("minecraft", "textures/item/empty_armor_slot_chestplate.png"),
+            Identifier.of("minecraft", "textures/item/empty_armor_slot_helmet.png")
     };
 
-    public static void onHudRender(DrawContext context, float v) {
+    public static void onHudRender(DrawContext context, RenderTickCounter v) {
         MinecraftClient client = MinecraftClient.getInstance();
         //HudMod.SHOULD_RENDER_ARMOR = true;
         if (client.player != null && HudMod.shouldDisplay()) {
@@ -73,15 +73,14 @@ public class ArmorHudRenderer {
 
     private static void draw(DrawContext context, Identifier texture, float x, float y) {
         RenderSystem.setShaderTexture(0, texture);
-        RenderSystem.setShader(GameRenderer::getPositionColorTexProgram);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
         RenderSystem.enableBlend();
         Matrix4f matrix4f = context.getMatrices().peek().getPositionMatrix();
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
-        bufferBuilder.vertex(matrix4f, x, y, 0f).color(1f, 1f, 1f, 1f).texture(0f, 0f).next();
-        bufferBuilder.vertex(matrix4f, x, y + 16, 0f).color(1, 1f, 1f, 1f).texture(0f, 1f).next();
-        bufferBuilder.vertex(matrix4f, x + 16, y + 16, 0f).color(1f, 1f, 1f, 1f).texture(1f, 1f).next();
-        bufferBuilder.vertex(matrix4f, x + 16, y, 0f).color(1f, 1f, 1f, 1f).texture(1f, 0f).next();
+        BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+        bufferBuilder.vertex(matrix4f, x, y, 0f).color(1f, 1f, 1f, 1f).texture(0f, 0f);
+        bufferBuilder.vertex(matrix4f, x, y + 16, 0f).color(1, 1f, 1f, 1f).texture(0f, 1f);
+        bufferBuilder.vertex(matrix4f, x + 16, y + 16, 0f).color(1f, 1f, 1f, 1f).texture(1f, 1f);
+        bufferBuilder.vertex(matrix4f, x + 16, y, 0f).color(1f, 1f, 1f, 1f).texture(1f, 0f);
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
         RenderSystem.disableBlend();
     }

@@ -1,43 +1,26 @@
 package net.kyrptonaught.lemclienthelper.syncedKeybinds;
 
-import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.kyrptonaught.lemclienthelper.LEMClientHelperMod;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
 public class SyncedKeybindsNetworking {
-    public static final Identifier SYNC_KEYBINDS_PACKET = new Identifier(SyncedKeybindsMod.MOD_ID, "sync_keybinds_packet");
-    public static final Identifier KEYBIND_PRESSED_PACKET = new Identifier(SyncedKeybindsMod.MOD_ID, "keybind_pressed_packet");
 
     @Environment(EnvType.CLIENT)
-    public static void sendKeyPacket(String keyID) {
-        PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-        buf.writeString(keyID);
-        ClientPlayNetworking.send(KEYBIND_PRESSED_PACKET, buf);
+    public static void sendKeyPacket(Identifier keyID) {
+        ClientPlayNetworking.send(new KeybindPressPacket(keyID));
     }
 
     public static void registerReceivePacket() {
-        ClientPlayNetworking.registerGlobalReceiver(SYNC_KEYBINDS_PACKET, (client, handler, packetByteBuf, responseSender) -> {
-            int count = packetByteBuf.readInt();
-            DataHolder[] dataHolders = new DataHolder[count];
-
-            for (int i = 0; i < count; i++) {
-                String id = packetByteBuf.readString();
-                String keybinding = packetByteBuf.readString();
-                String controllerBind = packetByteBuf.readString();
-                dataHolders[i] = new DataHolder(id, keybinding, controllerBind);
-            }
-            client.execute(() -> {
-                for (DataHolder dataHolder : dataHolders)
-                    SyncedKeybindsMod.registerNewKeybind(dataHolder.id, dataHolder.keybinding, dataHolder.controllerBind);
+        ClientPlayNetworking.registerGlobalReceiver(SyncKeybindsPacket.PACKET_ID, (payload, context) -> {
+            context.client().execute(() -> {
+                payload.keybinds().forEach((identifier, keybindConfigItem) -> {
+                    SyncedKeybindsMod.registerNewKeybind(identifier, keybindConfigItem.keybinding, keybindConfigItem.controllerBind);
+                });
                 LEMClientHelperMod.configManager.save(SyncedKeybindsMod.MOD_ID);
             });
         });
-    }
-
-    public record DataHolder(String id, String keybinding, String controllerBind) {
     }
 }

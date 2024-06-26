@@ -5,13 +5,14 @@ import net.kyrptonaught.kyrptconfig.keybinding.CustomKeyBinding;
 import net.kyrptonaught.kyrptconfig.keybinding.DisplayOnlyKeyBind;
 import net.kyrptonaught.lemclienthelper.LEMClientHelperMod;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.util.Identifier;
 
 public class SyncedKeybind {
-    public String ID;
+    public Identifier ID;
     private final CustomKeyBinding keyBinding;
     private KeyBinding vanillaBind;
 
-    public SyncedKeybind(String id, SyncedKeybindsConfig.KeybindConfigItem keybindConfigItem) {
+    public SyncedKeybind(Identifier id, SyncedKeybindsConfig.KeybindConfigItem keybindConfigItem) {
         this.ID = id;
         keyBinding = CustomKeyBinding.configDefault(SyncedKeybindsMod.MOD_ID, keybindConfigItem.defaultKeybinding);
         keyBinding.setRaw(keybindConfigItem.keybinding);
@@ -28,7 +29,7 @@ public class SyncedKeybind {
     public KeyBinding getVanillaBind() {
         if (vanillaBind == null)
             vanillaBind = new NonConflictingKeyBinding(
-                    "lch.key.sync." + ID.replace(":", "."),
+                    ID.toTranslationKey("lch.key.sync"),
                     "key.category." + LEMClientHelperMod.MOD_ID,
                     keyBinding,
                     setKey -> {
