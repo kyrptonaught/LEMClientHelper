@@ -41,6 +41,7 @@ public class ArmorHudRenderer {
                     context.drawItemInSlot(client.textRenderer, armorStack, 0, y);
                 }
             }
+            context.setShaderColor(1f, 1f, 1f, 1f);
             context.getMatrices().pop();
         }
     }
@@ -67,8 +68,8 @@ public class ArmorHudRenderer {
                 context.drawItemInSlot(client.textRenderer, armorStack, 0, y);
             }
         }
+        context.setShaderColor(1f, 1f, 1f, 1f);
         context.getMatrices().pop();
-
     }
 
     private static void draw(DrawContext context, Identifier texture, float x, float y) {
