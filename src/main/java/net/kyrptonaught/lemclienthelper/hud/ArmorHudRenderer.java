@@ -22,7 +22,7 @@ public class ArmorHudRenderer {
     public static void onHudRender(DrawContext context, RenderTickCounter v) {
         MinecraftClient client = MinecraftClient.getInstance();
         //HudMod.SHOULD_RENDER_ARMOR = true;
-        if (client.player != null && HudMod.shouldDisplay()) {
+        if (client.player != null && HudMod.shouldDisplay() && !client.options.hudHidden) {
             int height = client.getWindow().getScaledHeight();
 
             context.getMatrices().push();
