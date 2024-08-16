@@ -1,0 +1,7 @@
+{
+  "defaults": {
+    "lemclienthelper.controlify.takeeverything": {
+      "button": "controlify:button/left_shoulder"
+    }
+  }
+}
