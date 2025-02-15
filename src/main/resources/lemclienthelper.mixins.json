@@ -5,6 +5,7 @@
   "client": [
     "bookGui.BookScreenMixin",
     "customWorldBorder.WorldBorderMixin",
+    "hideStatusBars.hideStatusBars",
     "ResourcePreloader.ClientBuiltInResourcePackProviderMixin",
     "SmallInv.HandledScreenMixin",
     "SmallInv.MidnightControlsMixin",
